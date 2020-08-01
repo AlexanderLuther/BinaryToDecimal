@@ -1,0 +1,82 @@
+package com.hluther.parser;
+import java_cup.runtime.*;
+import com.hluther.gui.PrincipalFrame;
+import com.hluther.lexer.Lexer;
+
+
+parser code {:
+
+    private PrincipalFrame principalFrame;
+    
+    public Parser(Lexer lexer, PrincipalFrame principalFrame) { 
+        super(lexer);
+        this.principalFrame = principalFrame;
+    }
+
+    public void printValue(double value){
+        principalFrame.printValue(value);
+    }
+
+    public void printProcess(String process){
+        principalFrame.printProcess(process + "\n");
+    }
+
+    public void syntax_error(Symbol s){
+       
+    }
+
+    public void unrecovered_syntax_error(Symbol s){
+       
+    } 
+:}
+
+/* Terminals */
+terminal Double NUM;
+terminal String FULLSTOP;
+
+/* Non-terminals */
+non terminal Double d, f;
+non terminal s;
+
+/* The grammar */
+start with s;
+
+s::=    d:value 
+        {:  printValue(value); 
+            printProcess("Todos los hijos del arbol se han sintetizado, el resultado final es: " + value);
+        :}
+        | d:value1 FULLSTOP f:value2
+        {:  
+            double op = value1 + (value2*0.5);
+            printValue(op); 
+            printProcess("El valor sintetizado de la parte decimal de: " +value2+ " se divide dentro de dos y se suma a la parte entera.");
+            printProcess("Todos los hijos del arbol se han sintetizado, el resultado final es: " + op);
+        :}
+        | error:error {: :} 
+        ;
+
+d::=    d:value NUM:num  
+        {: 
+            double op = (2*value) +  num;
+            printProcess("Se multiplica 2 por el valor sintetizado de: " +value+ " Se le suma: " +num+ " Se sintetiza el resultado: " + op);
+            RESULT = op;
+        :}
+        | NUM:num 
+        {: 
+            printProcess("PARTE ENTERA\nSe sintetiza el valor: " + num);
+            RESULT = (double)num;
+        :}
+        ;
+
+f::=    f:value NUM:num  
+        {: 
+            double op = value*0.5 + num;
+            printProcess("Se divide dentro de 2 el valor sintetizado de: " +value+ " Se le suma: " +num+ " Se sintetiza el resultado: " + op);
+            RESULT = op;
+        :}
+        | NUM:num
+        {: 
+            printProcess("PARTE DECIMAL\nSe sintetiza el valor: " + num);
+            RESULT = num;
+        :}
+        ;
