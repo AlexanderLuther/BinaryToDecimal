@@ -22,7 +22,7 @@ parser code {:
     }
 
     public void syntax_error(Symbol s){
-       
+        principalFrame.printError("Numero no valido. debe de cumplir con la forma ##.##");
     }
 
     public void unrecovered_syntax_error(Symbol s){
@@ -68,7 +68,7 @@ d::=    d:value NUM:num
         :}
         ;
 
-f::=    f:value NUM:num  
+f::=     NUM:num f:value  
         {: 
             double op = value*0.5 + num;
             printProcess("Se divide dentro de 2 el valor sintetizado de: " +value+ " Se le suma: " +num+ " Se sintetiza el resultado: " + op);

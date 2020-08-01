@@ -47,9 +47,9 @@ public class Parser extends java_cup.runtime.lr_parser {
     "\ufffc\004\ufffc\005\ufffc\001\002\000\004\002\ufffe\001\002" +
     "\000\004\002\015\001\002\000\010\002\000\004\010\005" +
     "\011\001\002\000\010\002\ufffd\004\ufffd\005\ufffd\001\002" +
-    "\000\004\004\012\001\002\000\006\002\ufffa\004\ufffa\001" +
-    "\002\000\006\002\uffff\004\014\001\002\000\006\002\ufffb" +
-    "\004\ufffb\001\002\000\004\002\001\001\002" });
+    "\000\004\004\012\001\002\000\006\002\ufffa\004\012\001" +
+    "\002\000\004\002\uffff\001\002\000\004\002\ufffb\001\002" +
+    "\000\004\002\001\001\002" });
 
   /** Access to parse-action table. */
   public short[][] action_table() {return _action_table;}
@@ -59,9 +59,9 @@ public class Parser extends java_cup.runtime.lr_parser {
     unpackFromStrings(new String[] {
     "\000\013\000\006\002\006\004\005\001\001\000\002\001" +
     "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
-    "\000\002\001\001\000\004\003\012\001\001\000\002\001" +
-    "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
-    "" });
+    "\000\002\001\001\000\004\003\012\001\001\000\004\003" +
+    "\013\001\001\000\002\001\001\000\002\001\001\000\002" +
+    "\001\001" });
 
   /** Access to <code>reduce_goto</code> table. */
   public short[][] reduce_table() {return _reduce_table;}
@@ -117,7 +117,7 @@ public class Parser extends java_cup.runtime.lr_parser {
     }
 
     public void syntax_error(Symbol s){
-       
+        principalFrame.printError("Numero no valido. debe de cumplir con la forma ##.##");
     }
 
     public void unrecovered_syntax_error(Symbol s){
@@ -244,15 +244,15 @@ class CUP$Parser$actions {
           return CUP$Parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 6: // f ::= f NUM 
+          case 6: // f ::= NUM f 
             {
               Double RESULT =null;
-		int valueleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).left;
-		int valueright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).right;
-		Double value = (Double)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
-		int numleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
-		int numright = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
-		Double num = (Double)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
+		int numleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).left;
+		int numright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).right;
+		Double num = (Double)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
+		int valueleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
+		int valueright = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
+		Double value = (Double)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		 
             double op = value*0.5 + num;
             printProcess("Se divide dentro de 2 el valor sintetizado de: " +value+ " Se le suma: " +num+ " Se sintetiza el resultado: " + op);
